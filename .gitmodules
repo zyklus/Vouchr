@@ -1,0 +1,6 @@
+[submodule "externals/history_js"]
+	path = externals/history_js
+	url = https://github.com/balupton/history.js.git
+[submodule "externals/jquery"]
+	path = externals/jquery
+	url = https://github.com/jquery/jquery.git
