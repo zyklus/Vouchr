@@ -9,3 +9,8 @@ Dependencies
 	- Step (cwolves)
 - Cassandra (Initially installed v0.7.6)
 - Thrift (Initially installed v0.6.0)
+
+Installation
+============
+- Must set `NODE_ENV` environment variable to one of the servers listed in config/index.js
+- run `node nodeServer/index.js`
