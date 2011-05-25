@@ -4,5 +4,6 @@ Dependencies
 - NPM
 	- Express
 	- Stylus
-	- Thrift
+	- Cassandra
+		- Thrift
 - Step (cwolves)
