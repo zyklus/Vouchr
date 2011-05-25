@@ -1,0 +1,9 @@
+{
+	rootFolder : '../../../../externals/jquery/dist/'
+	compressedFiles : [
+		'jquery.min.js'
+	],
+	unCompressedFiles : [
+		'jquery.js'
+	]
+}

@@ -1,0 +1,11 @@
+{
+	rootFolder         : '../../../../../externals/history_js/scripts/'
+	compressedFolder   : 'compressed/',
+	unCompressedFolder : 'uncompressed/',
+	files : [
+		'json2.js',
+		'history.adapter.jquery.js',
+		'history.js',
+		'history.html4.js'
+	]
+}
