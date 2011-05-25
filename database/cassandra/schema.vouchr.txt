@@ -1,0 +1,84 @@
+- Users[email]
+	- info
+		- name
+		- password
+		- primary_address
+		- primary_credit_card
+		- primary_region
+		- deleted
+	- []companies             # admin of company
+	- []credit_cards
+	- []addresses
+	- []groups
+	- []coupons
+	- []regions
+
+- UserGroups[Name]
+	- []APIs
+	- []Users
+
+- APIs[Name]
+	- Name
+
+- Tokens[Token]
+	- id_user
+	- ip
+	- expires
+
+- Addresses[uuid]
+	- id_user
+	- street
+	- street2
+	- city
+	- state
+	- zip_code
+	- deleted
+
+- Regions[Name]
+	- Info
+		- Abbreviation
+	- []Deals
+
+- Coupons[coupon_code]
+	- id_user
+	- id_deal
+
+- CreditCards[uuid]
+	- id_address
+	- cc_num
+	- cvv2
+	- last4
+	- first_name
+	- last_name
+	- exp_month
+	- exp_year
+	- type
+	- deleted
+
+- Companies
+	- []tags
+	- []deals
+	- []regions
+	- []users
+
+- Tags[Tag]
+	- []deals
+	- []companies
+
+- Deals[uuid]
+	- info
+		- id_company
+		- title
+		- description
+		- max_deals
+		- percent_cut
+		- active
+	- []regions
+	- []categories
+
+- Categories[Name]
+	- info
+		- 
+	- []deals
+
+- Images
