@@ -18,6 +18,11 @@ var servers = {
 				write : CL.QUORUM, // in a local environment QUORUM is identical to ONE, so this should never need to change
 				read  : CL.QUORUM
 			}
+		},
+
+		auth_token : {
+			lifeInMinutes          : 60,
+			permanentLifeInMinutes : 60*24*365
 		}
 	},
 
