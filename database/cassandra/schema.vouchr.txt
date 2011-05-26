@@ -1,6 +1,8 @@
 - Users[email]
 	- info
-		- name
+		- uid(=rand)
+		- first_name
+		- last_name
 		- password
 		- primary_address
 		- primary_credit_card
@@ -13,14 +15,14 @@
 	- []coupons
 	- []regions
 
-- UserGroups[Name]
+- UserGroups[name]
 	- []APIs
 	- []Users
 
-- APIs[Name]
+- APIs[name]
 	- Name
 
-- Tokens[Token]
+- Tokens[token]
 	- id_user
 	- ip
 	- expires
@@ -34,7 +36,7 @@
 	- zip_code
 	- deleted
 
-- Regions[Name]
+- Regions[name]
 	- Info
 		- Abbreviation
 	- []Deals
@@ -61,7 +63,7 @@
 	- []regions
 	- []users
 
-- Tags[Tag]
+- Tags[tag]
 	- []deals
 	- []companies
 
@@ -76,7 +78,7 @@
 	- []regions
 	- []categories
 
-- Categories[Name]
+- Categories[name]
 	- info
 		- 
 	- []deals
