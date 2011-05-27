@@ -115,7 +115,7 @@ var paramSteps = step.fn({
 
 	var obj = {
 		data     : outData,
-		cb       : onAPIResponse.bind(null, s.cb, s.data, (authToken || {}).token, expiresAt, s.req || {}),
+		cb       : onAPIResponse.bindArgs(s.cb, s.data, (authToken || {}).token, expiresAt, s.req || {}),
 		cache    : cache,
 
 		getGuid  : helpers.getGuid,
@@ -136,7 +136,7 @@ var paramSteps = step.fn({
 	}
 
 	// the step library changes scope, so we need to pass the object as the first param to the error handler
-	obj.catchStepError = catchStepErrors.bind(null, obj);
+	obj.catchStepError = catchStepErrors.bindArgs(obj);
 
 	s.fn(obj);
 });
@@ -265,7 +265,7 @@ readDir(__dirname, true, function(apiName, mod){
 	    root = module.exports;
 
 	if(mod.steps){
-		mod.fn = stepFn.bind(null, mod.steps);
+		mod.fn = stepFn.bindArgs(mod.steps);
 	}else if($.isFunction(mod)){
 		mod.fn = mod;
 	}
@@ -277,7 +277,7 @@ readDir(__dirname, true, function(apiName, mod){
 		root = root[path[i]] || (root[path[i]] = {});
 	}
 
-	root[path[l]] = paramSteps.bind(null, {}, mod.params, mod.fn, apiName)
+	root[path[l]] = paramSteps.bindArgs({}, mod.params, mod.fn, apiName)
 
 	if(mod.denyExternal){ root[path[i]].denyExternal = true; }
 });
