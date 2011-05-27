@@ -13,25 +13,25 @@ module.exports.params = {
 };
 
 module.exports.steps = step.fn(function(){
-	MODELS.Users.get(this.shared.p.data.email, this);
+	MODELS.User.get(this.shared.p.data.email, this);
 
 }, function(users){
 	if(users.length){ throw new Error('email_taken'); }
 	
 	var p = this.shared.p
 
-	users.add({
+	MODELS.User.add({
 		email          : this.shared.email,
 		first_name     : this.shared.first_name,
 		last_name      : this.shared.last_name,
 		primary_region : this.shared.region_id,
 	}, this);
 	
-}, function(users){
+}, function(user){
 	var p = this.shared.p;
 
 	if(p.data.password){
-		users
+		user
 			.setPassword ( hashlib.sha256( salt.sprintf( p.data.password, users.uid ) ) )
 			.save        ( this );
 	}else{

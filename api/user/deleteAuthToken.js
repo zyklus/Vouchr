@@ -10,5 +10,5 @@ module.exports.steps = step.fn(function(){
 	// immediately return.  No need to wait for the actual token to be deleted
 	p.cb({ clearAuthToken : true, __hide : ['clearAuthToken'] });
 
-	MODELS.Tokens.remove(p.authToken.token);
+	MODELS.Token.remove( p.authToken.token );
 });

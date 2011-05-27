@@ -11,7 +11,7 @@ module.exports.params = {
 module.exports.steps = step.fn(function(){
 	var p = this.shared.p,
 
-	MODELS.Users.get(p.email, this);
+	MODELS.User.get(p.email, this);
 
 }, function(users){
 	users.filter( function(){
@@ -28,7 +28,7 @@ module.exports.steps = step.fn(function(){
 	this.shared.ip      = p.req.remoteAddress;
 	this.shared.expires = time + 60 * p.config.authToken[ p.data.permanent ? 'permanentLifeInMinutes' : 'lifeInMinutes' ];
 
-	MODELS.Tokens.get({
+	MODELS.Token.get({
 		id_user         : users.email,
 		ip              : this.shared.ip,
 		'expires_at >=' : time
@@ -42,7 +42,7 @@ module.exports.steps = step.fn(function(){
 		this.shared.tokenID = tokens.token;
 		tokens.setExpires( this.shared.expires ).save( this );
 	} else {
-		MODELS.Tokens.add({
+		MODELS.Token.add({
 			id_user : p.data.email,
 			ip      : this.shared.ip,
 			expires : this.shared.expires
