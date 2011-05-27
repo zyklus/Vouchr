@@ -11,20 +11,20 @@
  *  	- deleted
  */
 
-var klass = require('./klass'),
-  hashlib = require('vouchr_hashlib');
+var hashlib = require('vouchr_hashlib'),
+     MODELS = require('./');
 
-module.exports = klass({
+module.exports = {
 	schema : {
 		key        : 'uuid',
 		uuid       : String,
-		address    : MODEL.Address
+		address    : MODELS.Address,
 		cvv2       : String,
-		last4      : MODEL.Integer,
+		last4      : MODELS.Integer,
 		first_name : String,
 		last_name  : String,
-		exp_month  : MODEL.Integer,
-		exp_year   : MODEL.Integer,
+		exp_month  : MODELS.Integer,
+		exp_year   : MODELS.Integer,
 		type       : ['VISA', 'AMEX', 'MASTERCARD', 'DISCOVER'],
 		deleted    : Boolean
 	},
@@ -48,4 +48,4 @@ module.exports = klass({
 			this.token || ( this.token = hashlib.guid() );
 		}
 	}
-});
+};

@@ -4,14 +4,14 @@
  *  	- expires
  */
 
-var klass = require('./klass'),
-  hashlib = require('vouchr_hashlib');
+var hashlib = require('vouchr_hashlib'),
+     MODELS = require('./');
 
-module.exports = klass({
+module.exports = {
 	schema : {
 		key     : 'token',
 		token   : String,
-		user    : MODEL.User,
+		user    : MODELS.User,
 		ip      : String,
 		expires : Date
 	},
@@ -30,4 +30,4 @@ module.exports = klass({
 			this.token || ( this.token = hashlib.guid() );
 		}
 	}
-});
+};
