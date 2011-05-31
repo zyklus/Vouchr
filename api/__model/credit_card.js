@@ -15,9 +15,12 @@ var hashlib = require('vouchr_hashlib'),
      MODELS = require('./');
 
 module.exports = {
+	dbName : 'CreditCards',
+
 	schema : {
 		key        : 'uuid',
 		uuid       : String,
+
 		address    : MODELS.Address,
 		cvv2       : String,
 		last4      : MODELS.Integer,
@@ -44,7 +47,7 @@ module.exports = {
 		afterGet : function(){
 		},
 
-		onCreate : function(){
+		afterCreate : function(){
 			this.token || ( this.token = hashlib.guid() );
 		}
 	}

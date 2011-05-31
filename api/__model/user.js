@@ -20,6 +20,8 @@ var hashlib = require('vouchr_hashlib'),
      MODELS = require('./');
 
 module.exports = {
+	dbName : 'Users',
+
 	schema : {
 		key   : 'email',
 		email : String,
@@ -75,7 +77,7 @@ module.exports = {
 			this.getCreditCards(function( cards ){
 				this.__unlock();
 
-				cards = cards.filder( cc_id );
+				cards = cards.filter( cc_id );
 
 				if(cards.length){
 					this.primaryCreditCard = cards.eq(0);

@@ -8,6 +8,8 @@ var hashlib = require('vouchr_hashlib'),
      MODELS = require('./');
 
 module.exports = {
+	dbName : 'Tokens',
+
 	schema : {
 		key     : 'token',
 		token   : String,

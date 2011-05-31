@@ -43,7 +43,8 @@ module.exports = function(){
 
 function configureKlass( conf, nested ){
 	this.defineProperties({
-		__values__ : {}
+		__values__ : {},
+		__dirty__  : {},
 	});
 
 	var conf = $.extend(
@@ -65,7 +66,7 @@ function configureKlass( conf, nested ){
 
 var klassPrototype = {
 	add : function( data ) {
-		
+		if( !$.isPlainObject(data) && ( data.constructor != this.keyType ) ){ throw new Error('need_plain_object_or_key'); }
 	},
 
 	get : function( data, cb ) {
@@ -74,6 +75,17 @@ var klassPrototype = {
 
 	remove : function( data, cb ){
 		
+	},
+
+	filter : function( obj ){
+		return Array.prototype.filter.call(this,
+			obj instanceof root                ? function(v){ return obj == v; }     :
+			$.isFunction(obj)                  ? obj                                 :
+			$.isString(obj) || $.isNumber(obj) ? function(v){ return obj.key == v; } :
+
+			// not sure how to filter this
+			function(){ return false; }
+		);
 	},
 
 	/**
@@ -90,7 +102,7 @@ var klassPrototype = {
 	pop         : p.pop,
 	concat      : p.concat,
 	every       : p.every,
-	filter      : p.filter,
+//	filter      : p.filter,
 	forEach     : p.forEach,
 	map         : p.map,
 	reduce      : p.reduce,
@@ -110,8 +122,8 @@ function defineGettersAndSetters( schema, nested ){
 
 		if(schema[prop] instanceof root){
 			// if type is another model
-			this.defineProperty( 'get' + uProp, { enumerable: true, value: getRemoveField.bindArgs( prop ) } );
-			this.defineProperty( 'set' + uProp, { enumerable: true, value: setRemoveField.bindArgs( prop ) } );
+			this.defineProperty( 'get' + uProp, { enumerable: true, value: firstModel.bindArgs( getRemoveField.bindArgs( prop ) ) } );
+			this.defineProperty( 'set' + uProp, { enumerable: true, value: eachModel .bindArgs( setRemoveField.bindArgs( prop ) ) } );
 
 		}else if( $.isArray( schema[prop] ) ){
 			// Array of objects...
@@ -130,7 +142,8 @@ function defineGettersAndSetters( schema, nested ){
 					this.defineProperty( 'remove' + uProp, { enumerable: true, value: removeFieldAry.bindArgs( prop ) } );
 
 					// not sure if I should be adding this, but what the hell
-					this.defineProperty( prop, { enumerable: true, get : getField.bindArgs( prop ) } );
+					// .. actually
+					// this.defineProperty( prop, { enumerable: true, get : getField.bindArgs( prop ) } );
 				}
 			}else{
 				// of a set
@@ -155,14 +168,16 @@ function defineGettersAndSetters( schema, nested ){
 
 		}else{
 			// "Normal" object, can set/get directly
-			this.defineProperty( prop, {
-				enumerable : true,
-				       get : getter = getField.bindArgs( prop ),
-				       set : setter = setField.bindArgs( prop )
-			});
+			// or not -- API sanity
 
-			this.defineProperty( 'get' + uProp, { enumerable: true, value: getter } );
-			this.defineProperty( 'set' + uProp, { enumerable: true, value: setter } );
+			// this.defineProperty( prop, {
+			// 	enumerable : true,
+			// 	       get : getter = getField.bindArgs( prop ),
+			// 	       set : setter = setField.bindArgs( prop )
+			// });
+
+			this.defineProperty( 'get' + uProp, { enumerable: true, value: firstModel.bindArgs( getField.bindArgs( prop ) ) } );
+			this.defineProperty( 'set' + uProp, { enumerable: true, value: eachModel .bindArgs( setField.bindArgs( prop ) ) } );
 		}
 	}
 
@@ -171,37 +186,66 @@ function defineGettersAndSetters( schema, nested ){
 	}
 }
 
+function firstModel( cb ){
+	return cb.call( this, this.this[0] );
+}
+
+function eachModel( cb ){
+	var self = this.this;
+
+	for(var i=0, l=self.length; i<l; i++){
+		cb.
+	}
+}
+
 /**
  * GETTERS AND SETTERS FOR...
  **/
 
-// normal objects
+// NORMAL OBJECTS
 function setField( field, data ){
-	this.__values__[field] = data;
+	this.this.__values__[field] = data;
+
+	return this.this;
 }
 
 function getField( field ){
-	return this.__values__[field];
+	return this.this.__values__[field];
 }
 
 
-// normal object arrays
+// NORMAL OBJECT ARRAYS
 function addFieldAry( field, value ){
+	this.this.__values__[field].push( value );
+
+	return this.this;
 }
 
 function removeFieldAry( field, value ){
+	this.this.__values__[field].filter( function(a){ return a != value; } );
+
+	return this.this;
 }
 
 
-// linked Models
-function getRemoteField( field, cb ){
+// LINKED MODELS
+function getRemoteField( field, cb, obj ){
+	var obj = this.this.__values__[field];
+
+	if(obj instanceof root){
+		cb(obj);
+	}else{
+		// attempt to get the object from cassandra
+		
+	}
 }
 
 function setRemoteField( field, value, cb ){
+	
 }
 
 
-// linked Model Arrays
+// LINKED MODEL ARRAYS
 function getRemoteFieldAry( field, cb ){
 }
 
